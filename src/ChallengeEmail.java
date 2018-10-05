@@ -6,32 +6,27 @@ import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ChallengeEmail { // looking for property="name">NAME<
+public class ChallengeEmail {
 
 	public static void main(String[] args) throws Exception {
-		// Setting up BufferedReader object
-		// Telling java to use main proxy server to get through university firewall
 		Scanner reader = new Scanner (System.in);
-		System.getProperties().put("proxySet", "true");
-		System.getProperties().put("proxyHost", "152.78.128.51");
-		System.getProperties().put("proxyPort", "3128");
 		
 		System.out.print("Enter ID: ");		
 		URL url1 = new URL("https://www.ecs.soton.ac.uk/people/" + reader.nextLine());
 		URLConnection connection = url1.openConnection();
 		BufferedReader buffer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-		
-		String source = "";
+
+		StringBuilder source = new StringBuilder();
 		String line;
 		while ((line = buffer.readLine()) != null) {
-			source += line;
+			source.append(line);
 		}
 		
-		Pattern p = Pattern.compile("property=\"name\">.*</h1");
-		Matcher m = p.matcher(source);
+		Pattern p = Pattern.compile("property=\"name\">.*</h1"); // regex: "property="name">$NAME<
+		Matcher m = p.matcher(source.toString());
 		while (m.find()) {
 			String g = m.group();
-			System.out.println(g.substring(16, g.length() - 4));
+			System.out.println(g.substring(16, g.length() - 4)); // Cuts everything from the string except the name
 		}
 		
 	}
