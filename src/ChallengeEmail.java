@@ -16,11 +16,8 @@ public class ChallengeEmail { // looking for property="name">NAME<
 		System.getProperties().put("proxyHost", "152.78.128.51");
 		System.getProperties().put("proxyPort", "3128");
 		
-		System.out.print("Enter ID: ");
-		String emailID = reader.nextLine();
-		String url = "https://www.ecs.soton.ac.uk/people/" + emailID;
-		
-		URL url1 = new URL(url);
+		System.out.print("Enter ID: ");		
+		URL url1 = new URL("https://www.ecs.soton.ac.uk/people/" + reader.nextLine());
 		URLConnection connection = url1.openConnection();
 		BufferedReader buffer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		
