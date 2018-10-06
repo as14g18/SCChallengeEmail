@@ -14,21 +14,19 @@ public class ChallengeEmail {
 		System.out.print("Enter ID: ");		
 		URL url1 = new URL("https://www.ecs.soton.ac.uk/people/" + reader.nextLine());
 		URLConnection connection = url1.openConnection();
+		
 		BufferedReader buffer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-		StringBuilder source = new StringBuilder();
+		
+		Pattern p = Pattern.compile("property=\"name\">(.*?)</h1"); // regex: "property="name">$NAME<
 		String line;
 		while ((line = buffer.readLine()) != null) {
-			source.append(line);
+			Matcher m = p.matcher(line);
+			if (m.find()) {
+				System.out.println(m.group(1));
+				return;
+			}			
 		}
 		
-		Pattern p = Pattern.compile("property=\"name\">.*</h1"); // regex: "property="name">$NAME<
-		Matcher m = p.matcher(source.toString());
-		while (m.find()) {
-			String g = m.group();
-			System.out.println(g.substring(16, g.length() - 4)); // Cuts everything from the string except the name
-		}
-		
+		System.out.println("No users found with that email ID");
 	}
-
 }
